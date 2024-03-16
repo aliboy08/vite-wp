@@ -19,6 +19,9 @@ include_once 'vite-wp/vite-wp.php';
 Load the asset on wp
 ```
 FF\Vite\load_asset('src/main.js');
+
+only load the css, exclude js:
+FF\Vite\load_asset('src/main.js', ['css_only' => true]);
 ```
 
 To start development
