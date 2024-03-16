@@ -49,11 +49,11 @@ function load_asset_production( $handle, $options ){
     wp_enqueue_script($handle, $js_src, [], null, true);
 }
 
-function load_css( $handle ){
-    if( !isset($asset->css) ) return; 
+function load_css( $asset ){
+    if( !isset($asset->css) ) return;
     foreach( $asset->css as $base_src ) {
         $css_src = VITE_URL.'/dist/'.$base_src;
-        wp_enqueue_style( $base_src, $src );
+        wp_enqueue_style( $base_src, $css_src );
     }
 }
 
