@@ -1,4 +1,4 @@
-<h1>Vite + WP boilerplate v2</h1>
+<h1>Vite + WP</h1>
 
 Clone the repo on your theme directory
 ```
