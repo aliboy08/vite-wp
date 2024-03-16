@@ -18,7 +18,7 @@ include_once 'vite-wp/vite-wp.php';
 ```
 
 
-<h3>Load the asset on wp</h3>
+<h3>Load asset on wp</h3>
 
 ```
 FF\Vite\load_asset('src/main.js');
