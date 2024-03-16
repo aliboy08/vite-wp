@@ -11,13 +11,15 @@ npm install
 ```
 
 
-Include the php file on your functions.php
+<h3>Include the php file on your functions.php</h3>
+
 ```
 include_once 'vite-wp/vite-wp.php';
 ```
 
 
-Load the asset on wp
+<h3>Load the asset on wp</h3>
+
 ```
 FF\Vite\load_asset('src/main.js');
 
@@ -25,8 +27,9 @@ FF\Vite\load_asset('src/main.js');
 FF\Vite\load_asset('src/main.js', ['css_only' => true]);
 ```
 
-Adding entry points
-Add entry points on vite.config.js
+
+<h3>Add entry points at vite.config.js</h3>
+
 ```
 export default defineConfig({
     build: {
@@ -56,7 +59,7 @@ npm run build
 ```
 
 
-<h4>Utilities</h4>
+<h4>Extra</h4>
 
 <h5>Load critical css</h5>
 
