@@ -2,46 +2,45 @@
 namespace FF\Vite;
 
 function get_manifest(){
-    $manifest_file = __DIR__ . '/dist/.vite/manifest.json';
+    $manifest_file = __DIR__ . '/dist/wp-manifest.json';
     $manifest = wp_json_file_decode( $manifest_file );
     return $manifest;
 }
 
-function get_mode(){
-    $mode = 'build';
-    $mode_file = __DIR__ .'/mode.txt';
-    if( !file_exists( $mode_file ) ) {
-        return $mode;
+function get_mode($manifest){
+    if( !$manifest ) {
+        return 'build';
     }
-    if( file_get_contents($mode_file) == 'dev' ) {
+    if( $manifest->mode == 'dev' ) {
         return 'dev';
-    } 
-    return $mode;
+    }
+    return 'build';
 }
 
 function load_asset($handle, $options = []){
-    if( get_mode() == 'dev' ) {
+    $manifest = get_manifest();
+    if( !$manifest || $manifest->mode == 'dev' ) {
         load_asset_dev( $handle );
     } else {
-        load_asset_production( $handle, $options );
+        load_asset_production( $handle, $options, $manifest );
     }
 }
 
 function load_asset_production( $handle, $options ){
     $manifest = get_manifest();
-    if( !isset( $manifest->$handle ) ) return;
+    if( !isset( $manifest->entry_points->$handle ) ) return;
     
     load_css( $handle, $manifest );
 
     if( isset( $options['css_only'] ) && $options['css_only'] ) return;
 
-    $js_src = get_stylesheet_directory_uri() . '/vite-wp/dist/'. $manifest->$handle->file;
+    $js_src = get_stylesheet_directory_uri() . '/vite-wp/dist/'. $manifest->entry_points->$handle->file;
     wp_enqueue_script($handle, $js_src, [], null, true);
 }
 
 function load_css( $handle, $manifest  ){
-    if( !isset($manifest->$handle->css) ) return; 
-    foreach( $manifest->$handle->css as $base_src ) {
+    if( !isset($manifest->entry_points->$handle->css) ) return; 
+    foreach( $manifest->entry_points->$handle->css as $base_src ) {
         $src = str_replace( $_SERVER['DOCUMENT_ROOT'], get_bloginfo('url'), str_replace('\\', '/', __DIR__ ) ) . '/dist/'. $base_src;
         wp_enqueue_style( $handle, $src );
     }
@@ -69,8 +68,11 @@ function pre_debug($s){
 
 function load_critical_css(){
     add_action('wp_head', function(){
+        
         $handle = 'src/critical.js';
-        if( get_mode() == 'dev' ) {
+        $manifest = get_manifest();
+        
+        if( get_mode($manifest) == 'dev' ) {
             // dev, load file
             load_asset_dev($handle);
         } 
@@ -78,7 +80,7 @@ function load_critical_css(){
             // production, inline css
             $manifest = get_manifest();
             if( !$manifest ) return;
-            $css_file = __DIR__ .'/dist/'.$manifest->$handle->css[0];
+            $css_file = __DIR__ .'/dist/'.$manifest->entry_points->$handle->css[0];
             if( !file_exists($css_file) ) return;
             echo '<style type="text/css">'. file_get_contents($css_file) .'</style>';
         }
