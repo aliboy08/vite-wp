@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node dev.cjs && vite",
-    "build": "node build.cjs && vite build"
+    "dev": "node wp-manifest.cjs dev && vite",
+    "build": "vite build && node wp-manifest.cjs build"
   },
   "devDependencies": {
     "sass": "^1.72.0",
