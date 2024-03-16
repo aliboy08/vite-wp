@@ -16,6 +16,7 @@ Include the php file on your functions.php
 include_once 'vite-wp/vite-wp.php';
 ```
 
+
 Load the asset on wp
 ```
 FF\Vite\load_asset('src/main.js');
@@ -23,6 +24,25 @@ FF\Vite\load_asset('src/main.js');
 // only load the css, exclude js:
 FF\Vite\load_asset('src/main.js', ['css_only' => true]);
 ```
+
+Adding entry points
+Add entry points on vite.config.js
+```
+export default defineConfig({
+    build: {
+        manifest: true,
+        rollupOptions: {
+            input: {
+                critical: 'src/critical.js',
+                main: 'src/main.js',
+                // additional entry points here
+                your_script: 'src/path_to_your_script.js',
+            },
+        },
+    },
+})
+```
+
 
 To start development
 ```
@@ -33,6 +53,7 @@ To bundle for production
 ```
 npm run build
 ```
+
 
 <h4>Utilities</h4>
 
