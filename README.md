@@ -35,10 +35,10 @@ export default {
 	plugins: [
 		v4wp( {
 			input: {
-                critical: 'src/critical.js',
-                main: 'src/main.js',
-                // add your additional entry points here
-                your_script: 'src/path_to_your_script.js',
+				critical: 'src/critical.js',
+				main: 'src/main.js',
+				// add your additional entry points here
+				your_script: 'src/path_to_your_script.js',
 			},
 			outDir: 'dist',
 		} ),
