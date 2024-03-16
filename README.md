@@ -5,7 +5,7 @@ Clone the repo on your theme directory
 gh repo clone aliboy08/vite-wp
 ```
 
-Run install
+Navigate to the directory and run install
 ```
 npm install
 ```
@@ -18,7 +18,7 @@ include_once 'vite-wp/vite-wp.php';
 ```
 
 
-<h3>Load asset on wp</h3>
+<h3>Load asset on wp
 
 ```
 FF\Vite\load_asset('src/main.js');
@@ -28,7 +28,7 @@ FF\Vite\load_asset('src/main.js', ['css_only' => true]);
 ```
 
 
-<h3>Add entry points at vite.config.js</h3>
+<h3>Add entry points at vite.config.js
 
 ```
 export default defineConfig({
@@ -48,12 +48,14 @@ export default defineConfig({
 ```
 
 
-To start development
+<h4>Start development
+
 ```
 npm run dev
 ```
 
-To bundle for production
+<h4>Bundle for production
+    
 ```
 npm run build
 ```
