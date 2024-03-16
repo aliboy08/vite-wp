@@ -12,6 +12,7 @@ function generate_custom_manifest(output, input){
 }
 
 function get_manifest_entry_points(file_path){
+    if(!fs.existsSync(file_path)) return {};
     const data = fs.readFileSync(file_path, 'utf8');
     const manifest_data = JSON.parse(data);
     const entry_points = {};
