@@ -35,7 +35,8 @@ export default defineConfig({
             input: {
                 critical: 'src/critical.js',
                 main: 'src/main.js',
-                // additional entry points here
+
+                // add your additional entry points here
                 your_script: 'src/path_to_your_script.js',
             },
         },
