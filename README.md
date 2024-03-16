@@ -2,7 +2,7 @@
 
 Clone the repo on your theme directory
 ```
-gh repo clone aliboy08/vite-wp-2
+gh repo clone aliboy08/vite-wp
 ```
 
 Run install
