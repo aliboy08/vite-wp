@@ -61,16 +61,16 @@ npm run build
 ```
 
 
-<h4>Extra</h4>
+<h3>Extra</h3>
 
-<h5>Load critical css</h5>
+<h4>Load critical css</h4>
 
 inlines the critical css on the head, put your critical css codes at /vite-wp/src/css/critical.scss
 ```
 FF\Vite\load_critical_css();
 ```
 
-<h5>Defer css</h5>
+<h4>Defer css</h4>
 
 adds defer attributes (link=preload) on css link tags, so it doesn't render block
 ```
