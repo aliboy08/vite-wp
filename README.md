@@ -65,8 +65,7 @@ npm run build
 
 <h4>Load critical css</h4>
 
-inlines the critical css on the head, put your critical css codes at /vite-wp/src/css/critical.scss
-runs an action hook to the wp_head printing the contents of the critical.scss file as inline css
+prints the contents of the /src/css/critical.scss file as inline css
 ```
 FF\Vite\load_critical_css();
 ```
