@@ -18,7 +18,7 @@ include_once 'vite-wp/vite-wp.php';
 ```
 
 
-<h3>Load asset on wp
+<h3>Load asset on wp</h3>
 
 ```
 FF\Vite\load_asset('src/main.js');
@@ -28,7 +28,7 @@ FF\Vite\load_asset('src/main.js', ['css_only' => true]);
 ```
 
 
-<h3>Add entry points at vite.config.js
+<h3>Add entry points at vite.config.js</h3>
 
 ```
 export default defineConfig({
@@ -48,13 +48,13 @@ export default defineConfig({
 ```
 
 
-<h4>Start development
+<h4>Start development</h4>
 
 ```
 npm run dev
 ```
 
-<h4>Bundle for production
+<h4>Bundle for production</h4>
     
 ```
 npm run build
