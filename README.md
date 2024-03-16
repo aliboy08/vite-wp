@@ -65,7 +65,7 @@ npm run build
 
 <h4>Load critical css</h4>
 
-prints the contents of the /src/css/critical.scss file as inline css
+prints the contents of the /src/css/critical.scss file as inline css on the head via wp_head action hook
 ```
 FF\Vite\load_critical_css();
 ```
