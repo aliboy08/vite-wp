@@ -1,54 +1,66 @@
 <?php
 namespace FF\Vite;
 
+define('VITE_DIR', get_stylesheet_directory() .'/vite-wp/' );
+define('VITE_URL', get_stylesheet_directory_uri().'/vite-wp/');
+define('VITE_MANIFEST', get_manifest());
+define('VITE_MODE', get_mode());
+define('VITE_SERVER_ORIGIN', get_dev_server_origin());
+
 function get_manifest(){
-    $manifest_file = __DIR__ . '/dist/wp-manifest.json';
+    $manifest_file = VITE_DIR . '/dist/wp-manifest.json';
     $manifest = wp_json_file_decode( $manifest_file );
     return $manifest;
 }
 
-function get_mode($manifest){
-    if( !$manifest ) {
+function get_dev_server_origin(){
+    $file = VITE_DIR.'/dist/vite-dev-server.json';
+    $server_config = wp_json_file_decode( $file );
+    if( !$server_config ) return 'http://localhost:5173';
+    return $server_config->origin;
+}
+
+function get_mode(){
+    if( !VITE_MANIFEST ) {
         return 'build';
     }
-    if( $manifest->mode == 'dev' ) {
+    if( VITE_MANIFEST->mode == 'dev' ) {
         return 'dev';
     }
     return 'build';
 }
 
 function load_asset($handle, $options = []){
-    $manifest = get_manifest();
-    if( !$manifest || $manifest->mode == 'dev' ) {
+    if( VITE_MODE == 'dev' ) {
         load_asset_dev( $handle );
     } else {
-        load_asset_production( $handle, $options, $manifest );
+        load_asset_production( $handle, $options );
     }
 }
 
 function load_asset_production( $handle, $options ){
-    $manifest = get_manifest();
-    if( !isset( $manifest->entry_points->$handle ) ) return;
-    
-    load_css( $handle, $manifest );
+    if( !isset( VITE_MANIFEST->entry_points->$handle ) ) return;
+    $asset = VITE_MANIFEST->entry_points->$handle;
 
+    load_css( $asset );
     if( isset( $options['css_only'] ) && $options['css_only'] ) return;
 
-    $js_src = get_stylesheet_directory_uri() . '/vite-wp/dist/'. $manifest->entry_points->$handle->file;
+    $js_src = VITE_URL.'/dist/'.$asset->file;
     wp_enqueue_script($handle, $js_src, [], null, true);
 }
 
-function load_css( $handle, $manifest  ){
-    if( !isset($manifest->entry_points->$handle->css) ) return; 
-    foreach( $manifest->entry_points->$handle->css as $base_src ) {
-        $src = str_replace( $_SERVER['DOCUMENT_ROOT'], get_bloginfo('url'), str_replace('\\', '/', __DIR__ ) ) . '/dist/'. $base_src;
-        wp_enqueue_style( $handle, $src );
+function load_css( $handle ){
+    if( !isset($asset->css) ) return; 
+    foreach( $asset->css as $base_src ) {
+        $css_src = VITE_URL.'/dist/'.$base_src;
+        wp_enqueue_style( $base_src, $src );
     }
 }
 
 function load_asset_dev( $handle ){
-    $src = 'http://localhost:5173/'. $handle;
+    $src = VITE_SERVER_ORIGIN.'/'.$handle;
     wp_enqueue_script($handle, $src);
+
     add_filter('script_loader_tag', function( $tag, $js_handle ) use ($handle){
         if( $js_handle !== $handle ) return $tag;
         if( strpos( $tag, ' type="module"' ) === false ) {
@@ -58,31 +70,25 @@ function load_asset_dev( $handle ){
     }, 100, 2);
 }
 
-add_action('wp_enqueue_scripts', function(){
-    load_asset('src/main.js');
-});
-
 function pre_debug($s){
     echo '<pre>'. print_r( $s, true ) .'</pre>';
 }
 
 function load_critical_css(){
     add_action('wp_head', function(){
-        
         $handle = 'src/critical.js';
-        $manifest = get_manifest();
-        
-        if( get_mode($manifest) == 'dev' ) {
+        if( VITE_MODE == 'dev' ) {
             // dev, load file
             load_asset_dev($handle);
-        } 
+        }
         else {
             // production, inline css
-            $manifest = get_manifest();
-            if( !$manifest ) return;
-            $css_file = __DIR__ .'/dist/'.$manifest->entry_points->$handle->css[0];
-            if( !file_exists($css_file) ) return;
-            echo '<style type="text/css">'. file_get_contents($css_file) .'</style>';
+            if( !VITE_MANIFEST || !VITE_MANIFEST->entry_points->$handle ) return;
+            // $css_file = VITE_DIR .'/dist/'.VITE_MANIFEST->$handle->css[0];
+            // if( !file_exists($css_file) ) return;
+            // echo '<style type="text/css">'. file_get_contents($css_file) .'</style>';
+            $src = VITE_URL . '/dist/'. VITE_MANIFEST->entry_points->$handle->css[0];
+            echo '<link rel="stylesheet" href="'. $src .'">';
         }
     }, 0);
 }
