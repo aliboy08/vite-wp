@@ -1,8 +1,8 @@
 <?php
 namespace FF\Vite;
 
-define('VITE_DIR', get_stylesheet_directory() .'/vite-wp/' );
-define('VITE_URL', get_stylesheet_directory_uri().'/vite-wp/');
+define('VITE_DIR', get_stylesheet_directory() .'/vite-wp' );
+define('VITE_URL', get_stylesheet_directory_uri().'/vite-wp');
 define('VITE_MANIFEST', get_manifest());
 define('VITE_MODE', get_mode());
 define('VITE_SERVER_ORIGIN', get_dev_server_origin());
