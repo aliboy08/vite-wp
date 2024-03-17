@@ -14,7 +14,7 @@ function get_manifest(){
 }
 
 function get_dev_server_origin(){
-     $file = VITE_DIR.'/dist/vite-dev-server.json';
+    $file = VITE_DIR.'/dist/vite-dev-server.json';
     if(!file_exists($file)) return 'http://localhost:5173';
     $server_config = wp_json_file_decode( $file );
     return $server_config->origin;
