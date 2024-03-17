@@ -9,6 +9,7 @@ define('VITE_SERVER_ORIGIN', get_dev_server_origin());
 
 function get_manifest(){
     $manifest_file = VITE_DIR . '/dist/wp-manifest.json';
+    if(!file_exists($manifest_file)) return '';
     $manifest = wp_json_file_decode( $manifest_file );
     return $manifest;
 }
